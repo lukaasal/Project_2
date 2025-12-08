@@ -6,40 +6,43 @@ namespace Project_2.Models
 {
     public class StudentManager
     {
-        private List<Student> students = new List<Student>();
-
-        public StudentManager() { }
+        private readonly List<Student> _students = new();
 
         public void AddStudent(Student student)
         {
-            students.Add(student);
-            Console.WriteLine($"Student added: {student.RollNumber} {student.Name} {student.SurName} {student.BirthDate.ToShortDateString()} {student.Grade}");
+            _students.Add(student);
+            Console.WriteLine($"Added: {student}");
         }
 
         public void RemoveStudent(int rollNumber)
         {
-            var student = students.FirstOrDefault(s => s.RollNumber == rollNumber);
-            if (student != null)
+            var student = _students.FirstOrDefault(s => s.RollNumber == rollNumber);
+            if (student == null)
             {
-                students.Remove(student);
-                Console.WriteLine($"Student deleted: {student.Name} {student.SurName}");
+                Console.WriteLine("No student found with that roll number.");
+                return;
             }
+
+            _students.Remove(student);
+            Console.WriteLine($"Removed: {student.Name} {student.Surname}");
         }
 
         public void ShowAll()
         {
-            Console.WriteLine("\n--- Student List ---");
+            Console.WriteLine("\n--- Students ---");
 
-            if (students.Count == 0)
+            if (_students.Count == 0)
             {
-                Console.WriteLine("List is empty!");
+                Console.WriteLine("No students registered.\n");
                 return;
             }
 
-            foreach (var student in students)
+            foreach (var student in _students)
             {
-                Console.WriteLine($"List: {student.RollNumber} {student.Name} {student.SurName} {student.BirthDate.ToShortDateString()} {student.Grade}");
+                Console.WriteLine(student);
             }
+
+            Console.WriteLine();
         }
     }
 }

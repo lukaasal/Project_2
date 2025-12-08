@@ -1,16 +1,7 @@
-﻿using System;
+﻿using Project_2;
 using Project_2.Models;
 
-namespace Project_2
-{
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            StudentManager manager = new StudentManager();
+var manager = new StudentManager();
+var listener = new KeyListener(manager);
 
-            KeyListener listener = new KeyListener(manager);
-            listener.Run();
-        }
-    }
-}
+listener.Run();

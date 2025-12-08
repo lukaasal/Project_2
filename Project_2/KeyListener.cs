@@ -5,11 +5,11 @@ namespace Project_2
 {
     public class KeyListener
     {
-        private StudentManager manager;
+        private readonly StudentManager _manager;
 
         public KeyListener(StudentManager manager)
         {
-            this.manager = manager;
+            _manager = manager;
         }
 
         public void Run()
@@ -23,7 +23,7 @@ namespace Project_2
                 Console.WriteLine("4. Exit");
                 Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
+                var choice = Console.ReadLine();
 
                 switch (choice)
                 {
@@ -34,13 +34,13 @@ namespace Project_2
                         RemoveStudentFromUser();
                         break;
                     case "3":
-                        manager.ShowAll();
+                        _manager.ShowAll();
                         break;
                     case "4":
-                        Console.WriteLine("Exiting program...");
+                        Console.WriteLine("Goodbye!");
                         return;
                     default:
-                        Console.WriteLine("Invalid choice, try again.");
+                        Console.WriteLine("Invalid choice.");
                         break;
                 }
             }
@@ -48,37 +48,49 @@ namespace Project_2
 
         private void AddStudentFromUser()
         {
-            Console.Write("Enter Roll Number: ");
-            int roll = int.Parse(Console.ReadLine());
+            try
+            {
+                Console.Write("Roll Number: ");
+                int roll = int.Parse(Console.ReadLine() ?? string.Empty);
 
-            Console.Write("Enter Name: ");
-            string name = Console.ReadLine();
+                Console.Write("Name: ");
+                string name = Console.ReadLine() ?? string.Empty;
 
-            Console.Write("Enter Surname: ");
-            string surname = Console.ReadLine();
+                Console.Write("Surname: ");
+                string surname = Console.ReadLine() ?? string.Empty;
 
-            Console.Write("Enter Birth Year: ");
-            int year = int.Parse(Console.ReadLine());
+                Console.Write("Birth Year: ");
+                int year = int.Parse(Console.ReadLine() ?? string.Empty);
 
-            Console.Write("Enter Birth Month: ");
-            int month = int.Parse(Console.ReadLine());
+                Console.Write("Birth Month: ");
+                int month = int.Parse(Console.ReadLine() ?? string.Empty);
 
-            Console.Write("Enter Birth Day: ");
-            int day = int.Parse(Console.ReadLine());
+                Console.Write("Birth Day: ");
+                int day = int.Parse(Console.ReadLine() ?? string.Empty);
 
-            Console.Write("Enter Grade: ");
-            double grade = double.Parse(Console.ReadLine());
+                Console.Write("Grade: ");
+                double grade = double.Parse(Console.ReadLine() ?? string.Empty);
 
-            Student s = new Student(roll, name, surname, new DateTime(year, month, day), grade);
-            manager.AddStudent(s);
+                var student = new Student(roll, name, surname, new DateTime(year, month, day), grade);
+                _manager.AddStudent(student);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid input. Student was not added.");
+            }
         }
 
         private void RemoveStudentFromUser()
         {
-            Console.Write("Enter Roll Number to Remove: ");
-            int roll = int.Parse(Console.ReadLine());
-
-            manager.RemoveStudent(roll);
+            Console.Write("Enter roll number: ");
+            if (int.TryParse(Console.ReadLine(), out int roll))
+            {
+                _manager.RemoveStudent(roll);
+            }
+            else
+            {
+                Console.WriteLine("Invalid number.");
+            }
         }
     }
 }

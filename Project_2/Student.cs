@@ -8,15 +8,15 @@ namespace Project_2.Models
 
         public Student() { }
 
-        public Student(int rollNumber, string name, string surName, DateTime birthDate, double grade)
-            : base(rollNumber, name, surName, birthDate)
+        public Student(int rollNumber, string name, string surname, DateTime birthDate, double grade)
+            : base(rollNumber, name, surname, birthDate)
         {
             Grade = grade;
         }
 
         public override string ToString()
         {
-            return base.ToString() + $"\n\tGrade: {Grade}";
+            return $"{base.ToString()}, Grade: {Grade}";
         }
     }
 }
