@@ -29,7 +29,7 @@ namespace Project_2.Models
 
         public void ShowAll()
         {
-            Console.WriteLine("\n--- Students ---");
+            Console.WriteLine("\n-- Students --");
 
             if (_students.Count == 0)
             {

@@ -16,7 +16,7 @@ namespace Project_2
         {
             while (true)
             {
-                Console.WriteLine("\n--- Student Manager ---");
+                Console.WriteLine("\n-- Student Manager --");
                 Console.WriteLine("1. Add Student");
                 Console.WriteLine("2. Remove Student");
                 Console.WriteLine("3. Show All Students");
