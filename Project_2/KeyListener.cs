@@ -50,35 +50,93 @@ namespace Project_2
         {
             try
             {
-                Console.Write("Roll Number: ");
-                int roll = int.Parse(Console.ReadLine() ?? string.Empty);
+                int roll;
+                // --- Roll Number ---
+                while (true)
+                {
+                    Console.Write("Roll Number: ");
+                    if (int.TryParse(Console.ReadLine(), out roll))
+                        break;
+                    Console.WriteLine("Invalid input. Roll Number must be a number.");
+                }
 
-                Console.Write("Name: ");
-                string name = Console.ReadLine() ?? string.Empty;
+                // --- Name ---
+                string name;
+                do
+                {
+                    Console.Write("Name: ");
+                    name = Console.ReadLine() ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(name) || name.Any(char.IsDigit))
+                        Console.WriteLine("Invalid input. Name cannot contain numbers or be empty.");
+                } while (string.IsNullOrWhiteSpace(name) || name.Any(char.IsDigit));
 
-                Console.Write("Surname: ");
-                string surname = Console.ReadLine() ?? string.Empty;
+                // --- Surname ---
+                string surname;
+                do
+                {
+                    Console.Write("Surname: ");
+                    surname = Console.ReadLine() ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(surname) || surname.Any(char.IsDigit))
+                        Console.WriteLine("Invalid input. Surname cannot contain numbers or be empty.");
+                } while (string.IsNullOrWhiteSpace(surname) || surname.Any(char.IsDigit));
 
-                Console.Write("Birth Year: ");
-                int year = int.Parse(Console.ReadLine() ?? string.Empty);
+                // --- Birth Date ---
+                int year, month, day;
+                while (true)
+                {
+                    Console.Write("Birth Year: ");
+                    if (!int.TryParse(Console.ReadLine(), out year)) { Console.WriteLine("Invalid year."); continue; }
 
-                Console.Write("Birth Month: ");
-                int month = int.Parse(Console.ReadLine() ?? string.Empty);
+                    Console.Write("Birth Month: ");
+                    if (!int.TryParse(Console.ReadLine(), out month) || month < 1 || month > 12) { Console.WriteLine("Invalid month."); continue; }
 
-                Console.Write("Birth Day: ");
-                int day = int.Parse(Console.ReadLine() ?? string.Empty);
+                    Console.Write("Birth Day: ");
+                    if (!int.TryParse(Console.ReadLine(), out day) || day < 1 || day > 31) { Console.WriteLine("Invalid day."); continue; }
 
-                Console.Write("Grade: ");
-                double grade = double.Parse(Console.ReadLine() ?? string.Empty);
+                    if (DateTime.TryParse($"{year}-{month}-{day}", out _))
+                        break;
+                    Console.WriteLine("Invalid date. Please try again.");
+                }
 
-                var student = new Student(roll, name, surname, new DateTime(year, month, day), grade);
-                _manager.AddStudent(student);
+                // --- Grade ---
+                double grade;
+                while (true)
+                {
+                    Console.Write("Grade: ");
+                    if (double.TryParse(Console.ReadLine(), out grade))
+                        break;
+                    Console.WriteLine("Invalid input. Grade must be a number.");
+                }
+
+                // --- Add student, check for duplicate RollNumber ---
+                bool added = false;
+                do
+                {
+                    var student = new Student(roll, name, surname, new DateTime(year, month, day), grade);
+                    added = _manager.AddStudent(student); // Returns false if duplicate
+
+                    if (!added)
+                    {
+                        Console.WriteLine("Please enter a different Roll Number.");
+
+                        // Ask for RollNumber again
+                        while (true)
+                        {
+                            Console.Write("Roll Number: ");
+                            if (int.TryParse(Console.ReadLine(), out roll))
+                                break;
+                            Console.WriteLine("Invalid input. Roll Number must be a number.");
+                        }
+                    }
+                } while (!added);
             }
             catch
             {
-                Console.WriteLine("Invalid input. Student was not added.");
+                Console.WriteLine("An error occurred. Student was not added.");
             }
         }
+
+
 
         private void RemoveStudentFromUser()
         {
